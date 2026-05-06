@@ -18,7 +18,7 @@ export const LoginForm = () => {
       onSubmit={formType === "login" ? handleLogin : handleSignUp}
       className="bg-dark p-4 rounded text-white container position-fixed"
       style={{
-        top: formType === "register" ? "26%" : "20%",
+        top: formType === "register" ? "28%" : "20%",
         left: "85%",
         zIndex: 1000,
         transform: "translate(-50%, -50%)",
@@ -26,7 +26,7 @@ export const LoginForm = () => {
         width: "100%",
       }}
     >
-      <div className="form-row mb-3 w-100 d-flex flex-column align-items-center gap-3">
+      <div className="form-row mb-3 w-100 d-flex flex-column align-items-center gap-3 ">
         {formType === "register" && (
           <LoginInput
             formData={formData}

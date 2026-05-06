@@ -42,7 +42,7 @@ export const Misiones = () => {
       <Hero
         img={HeroImageMisiones}
         children={<div></div>}
-        backgroundSize="contain"
+        backgroundSize="cover"
         fullWidth={true}
       />
       <div className="container my-3">

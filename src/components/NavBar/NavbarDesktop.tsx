@@ -68,7 +68,7 @@ export const NavbarDesktop = () => {
                 <button
                   type="button"
                   onClick={() => setIsOpenLogin((p) => !p)}
-                  className="btn btn-primary"
+                  className="btn btn-lg btn-primary mt-4"
                 >
                   <i className="fa-solid fa-user"></i>{" "}
                 </button>
