@@ -109,7 +109,7 @@ export const Misiones = () => {
                     {session && (<button
                       onClick={() => handleGoToMiniGame("memory-pairs")}
                       type="button"
-                      className="btn btn-primary position-absolute bottom-0 end-0 m-3"
+                      className="btn btn-primary position-absolute bottom-0 start-50 translate-middle-x m-3"
                     >
                       Jugar
                     </button>)}
@@ -125,7 +125,7 @@ export const Misiones = () => {
                     {session && (<button
                       onClick={() => handleGoToMiniGame("questions-game")}
                       type="button"
-                      className="btn btn-primary position-absolute bottom-0 end-0 m-3"
+                      className="btn btn-primary position-absolute bottom-0 start-50 translate-middle-x m-3"
                     >
                       Jugar
                     </button>)}
