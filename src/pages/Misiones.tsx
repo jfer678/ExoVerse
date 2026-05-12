@@ -103,6 +103,7 @@ export const Misiones = () => {
               </div>
               <div className="row">
                 <div className="col-12 col-md-6">
+
                   <GameCard session={session} imageSrc={MemoryPairsImage} redirectFunction={handleGoToMiniGame} gameName="memory-pairs"/>
                 </div>
                 <div className="col-12 col-md-6">
@@ -110,6 +111,37 @@ export const Misiones = () => {
                 </div>
                 <div className="col-12 col-md-6">
                   <GameCard session={session} imageSrc={PuzzlesImage}redirectFunction={handleGoToMiniGame}gameName="puzzles"/>
+                  <div className="ev-square-cards">
+                    <img
+                      src={MemoryPairsImage}
+                      alt="memory pairs image"
+                      className="img-fluid"
+                    />
+                    {session && (<button
+                      onClick={() => handleGoToMiniGame("memory-pairs")}
+                      type="button"
+                      className="btn btn-primary position-absolute bottom-0 start-50 translate-middle-x m-3"
+                    >
+                      Jugar
+                    </button>)}
+                  </div>
+                </div>
+                <div className="col-12 col-md-6">
+                  <div className="ev-square-cards">
+                    <img
+                      src={QuestionsImage}
+                      alt="Questions image"
+                      className="img-fluid"
+                    />
+                    {session && (<button
+                      onClick={() => handleGoToMiniGame("questions-game")}
+                      type="button"
+                      className="btn btn-primary position-absolute bottom-0 start-50 translate-middle-x m-3"
+                    >
+                      Jugar
+                    </button>)}
+                  </div>
+
                 </div>
               </div>
             </div>
