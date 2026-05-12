@@ -8,7 +8,21 @@ const Puzzles = () => {
   const [puzzleImageURL, setPuzzleImageURL] = useState<string | null>(null);
 
   const [gridSize] = useState(3);
-  const pieceSize = 150;
+
+  // Responsive
+  const [screenSize, setScreenSize] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setScreenSize(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  //  tamaños dinámicos 
+  const isMobile = screenSize < 640;
+  const isTablet = screenSize >= 640 && screenSize < 1024;
+
+  const pieceSize = isMobile ? 80 : isTablet ? 110 : 150;
 
   const [pieces, setPieces] = useState<number[]>([]);
   const [emptyIndex, setEmptyIndex] = useState<number | null>(null);
@@ -16,7 +30,7 @@ const Puzzles = () => {
 
   const navigate = useNavigate();
 
-  // Autenticación de usuarios
+  // Autenticación
   useEffect(() => {
     const getInitialSession = async () => {
       const {
@@ -37,12 +51,13 @@ const Puzzles = () => {
     return () => authListener.subscription.unsubscribe();
   }, [navigate]);
 
-  // Obtener imágenes de la BD
+  // Obtener imagen
   useEffect(() => {
     const fetchPuzzleImage = async () => {
       const { data, error } = await supabase
         .from("puzzles_images")
         .select("image_url");
+
       if (error || !data || data.length === 0) return;
 
       const randomIndex = Math.floor(Math.random() * data.length);
@@ -52,7 +67,7 @@ const Puzzles = () => {
     fetchPuzzleImage();
   }, []);
 
-  // Inicialización del Puzzle
+  // Inicializar puzzle
   useEffect(() => {
     if (!puzzleImageURL) return;
 
@@ -60,24 +75,24 @@ const Puzzles = () => {
     let arr = Array.from({ length: total }, (_, i) => i);
     let currentEmpty = total - 1;
 
-    // Simula movimientos reales para garantizar solución
-    const shuffleMoves = 100;
-    for (let i = 0; i < shuffleMoves; i++) {
+    for (let i = 0; i < 100; i++) {
       const neighbors = [];
       const row = Math.floor(currentEmpty / gridSize);
       const col = currentEmpty % gridSize;
 
-      if (row > 0) neighbors.push(currentEmpty - gridSize); // Arriba
-      if (row < gridSize - 1) neighbors.push(currentEmpty + gridSize); // Abajo
-      if (col > 0) neighbors.push(currentEmpty - 1); // Izquierda
-      if (col < gridSize - 1) neighbors.push(currentEmpty + 1); // Derecha
+      if (row > 0) neighbors.push(currentEmpty - gridSize);
+      if (row < gridSize - 1) neighbors.push(currentEmpty + gridSize);
+      if (col > 0) neighbors.push(currentEmpty - 1);
+      if (col < gridSize - 1) neighbors.push(currentEmpty + 1);
 
       const moveToIndex =
         neighbors[Math.floor(Math.random() * neighbors.length)];
+
       [arr[currentEmpty], arr[moveToIndex]] = [
         arr[moveToIndex],
         arr[currentEmpty],
       ];
+
       currentEmpty = moveToIndex;
     }
 
@@ -86,7 +101,6 @@ const Puzzles = () => {
     setIsSolved(false);
   }, [puzzleImageURL, gridSize]);
 
-  // Movimiento de las piezas
   const movePiece = (index: number) => {
     if (emptyIndex === null || isSolved) return;
 
@@ -112,8 +126,7 @@ const Puzzles = () => {
   };
 
   const checkIfSolved = (arr: number[]) => {
-    const solved = arr.every((val, i) => val === i);
-    if (solved) setIsSolved(true);
+    if (arr.every((val, i) => val === i)) setIsSolved(true);
   };
 
   return (
@@ -127,28 +140,33 @@ const Puzzles = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: isMobile ? "flex-start" : "center",
+        paddingTop: isMobile ? "40px" : "0px",
         fontFamily: "sans-serif",
       }}
     >
-      {/* Referencia  */}
+      {/*  REFERENCIA RESPONSIVE */}
       <div
         style={{
-          position: "absolute",
-          left: "300px",
-          top: "36%",
-          transform: "translateY(-50%)",
+          position: isMobile || isTablet ? "relative" : "absolute",
+
+          // PC 
+          left: isMobile || isTablet ? "0" : "300px",
+          top: isMobile || isTablet ? "0" : "36%",
+          transform: isMobile || isTablet ? "none" : "translateY(-50%)",
+
+          marginBottom: isMobile ? "40px" : isTablet ? "60px" : "0px",
+
           textAlign: "center",
         }}
       >
-        <p style={{ marginBottom: "10px", fontSize: "14px", opacity: 0.8 }}></p>
         {puzzleImageURL && (
           <img
             src={puzzleImageURL}
             alt="Referencia"
             style={{
-              width: "250px",
-              height: "150px",
+              width: isMobile ? "180px" : isTablet ? "220px" : "250px",
+              height: isMobile ? "110px" : isTablet ? "130px" : "150px",
               objectFit: "cover",
               borderRadius: "12px",
               border: "3px solid rgba(255,255,255,0.1)",
@@ -158,22 +176,14 @@ const Puzzles = () => {
       </div>
 
       <h1
-        style={{ marginBottom: "30px", fontSize: "2.5rem", fontWeight: "bold" }}
+        style={{
+          marginBottom: isMobile ? "20px" : "30px",
+          fontSize: isMobile ? "1.8rem" : "2.5rem",
+          fontWeight: "bold",
+        }}
       >
         Rompecabezas
       </h1>
-
-      {isSolved && (
-        <h2
-          style={{
-            color: "#4ade80",
-            marginBottom: "20px",
-            animation: "bounce 1s infinite",
-          }}
-        >
-          ¡Excelente! Completaste
-        </h2>
-      )}
 
       {!puzzleImageURL ? (
         <p>Cargando ...</p>
@@ -183,13 +193,12 @@ const Puzzles = () => {
             display: "grid",
             gridTemplateColumns: `repeat(${gridSize}, ${pieceSize}px)`,
             gridTemplateRows: `repeat(${gridSize}, ${pieceSize}px)`,
-            transform: "scaleX(1.5)",
-            gap: "10px",
+
+            transform: isMobile ? "scale(1)" : "scaleX(1.5)",
+
+            gap: isMobile ? "6px" : "10px",
+
             padding: "15px",
-            paddingTop: "20px",
-            paddingBottom: "20px",
-            paddingLeft: "15px",
-            paddingRight: "15px",
             background: "rgba(255,255,255,0.05)",
             borderRadius: "15px",
             boxShadow: "0 2px 40px rgb(255, 255, 255)",
@@ -199,7 +208,6 @@ const Puzzles = () => {
             const total = gridSize * gridSize;
             const isPieceEmpty = piece === total - 1;
 
-            // Coordenadas de la imagen original
             const row = Math.floor(piece / gridSize);
             const col = piece % gridSize;
 
@@ -212,39 +220,23 @@ const Puzzles = () => {
                   height: `${pieceSize}px`,
                   borderRadius: "8px",
                   cursor: isPieceEmpty || isSolved ? "default" : "pointer",
-                  transition: "background-color 0.3s ease",
                   backgroundColor: isPieceEmpty ? "#ffffff" : "transparent",
                   backgroundImage:
                     isPieceEmpty && !isSolved
                       ? "none"
                       : `url(${puzzleImageURL})`,
-                  backgroundSize: `${gridSize * pieceSize}px ${gridSize * pieceSize}px`,
-                  backgroundPosition: `-${col * pieceSize}px -${row * pieceSize}px`,
+                  backgroundSize: `${
+                    gridSize * pieceSize
+                  }px ${gridSize * pieceSize}px`,
+                  backgroundPosition: `-${
+                    col * pieceSize
+                  }px -${row * pieceSize}px`,
                   opacity: isPieceEmpty && !isSolved ? 0.3 : 1,
-                  transform: isPieceEmpty ? "scale(1)" : "scale(1)",
                 }}
               />
             );
           })}
         </div>
-      )}
-
-      {isSolved && (
-        <button
-          onClick={() => window.location.reload()}
-          style={{
-            marginTop: "40px",
-            padding: "12px 24px",
-            backgroundColor: "#3b82f6",
-            color: "white",
-            border: "none",
-            borderRadius: "full",
-            cursor: "pointer",
-            fontWeight: "bold",
-          }}
-        >
-          Siguiente
-        </button>
       )}
     </div>
   );
