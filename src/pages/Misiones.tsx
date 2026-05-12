@@ -2,7 +2,7 @@ import { Hero } from "../components/Hero/Hero";
 import HeroImageMisiones from "../assets/Misiones.png";
 import MemoryPairsImage from "../assets/MemoryPairs.png";
 import QuestionsImage from "../assets/Questions.png";
-import PuzzlesImage from "../assets/puzzles.jpg";
+import PuzzlesImage from "../assets/Puzzles.jpg";
 import { useNavigate, type Session } from "react-router";
 import { useEffect, useState } from "react";
 import supabase from "../lib/supabase";
