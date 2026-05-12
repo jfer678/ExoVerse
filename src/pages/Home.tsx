@@ -2,7 +2,6 @@ import { Hero } from "../components/Hero/Hero";
 import { CardsSection } from "../components/CardsSection/CardsSection";
 import ImgNews from "../assets/news1.png";
 import HeroImageHome from "../assets/FondoExoVerse.png";
-import { HeroContentHome } from "../components/Hero/HeroContentHome";
 import { useEffect, useState } from "react";
 import { getNews } from "../services/news";
 import type { Article } from "../interfaces/news";

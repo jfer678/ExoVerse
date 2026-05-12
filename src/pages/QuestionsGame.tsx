@@ -254,8 +254,13 @@ const QuestionsGame = () => {
 
   return (
     <div className="container mt-5">
-      <div style={{ textAlign: "center", maxWidth: "900px", margin: "0 auto"  }}>
-        <h3 className="text-primary"style={{fontWeight:"bold", marginBottom:"50px"}}>Obten puntaje perfecto para desbloquear stickers</h3>
+      <div style={{ textAlign: "center", maxWidth: "900px", margin: "0 auto" }}>
+        <h3
+          className="text-primary"
+          style={{ fontWeight: "bold", marginBottom: "50px" }}
+        >
+          Obten puntaje perfecto para desbloquear stickers
+        </h3>
 
         <h4>
           Pregunta {currentIndex + 1} / {shuffledQuestions.length}
@@ -273,9 +278,11 @@ const QuestionsGame = () => {
             option.id === currentQuestion.test_correct_option_id;
 
           let btnClass = "btn btn-outline-dark";
+
           if (selectedOptionId) {
-            if (isCorrect) btnClass = "btn btn-success";
-            else if (isSelected) btnClass = "btn btn-danger";
+            if (isSelected) {
+              btnClass = isCorrect ? "btn btn-success" : "btn btn-danger";
+            }
           }
 
           return (

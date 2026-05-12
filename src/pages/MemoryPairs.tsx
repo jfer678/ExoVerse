@@ -261,7 +261,7 @@ const MemoryPairs = () => {
       
       <h1 style={{textAlign:"center", fontWeight:"bold"}}> Memory Pairs </h1>
 
-      <h2  className="text-primary"style={{fontWeight:500, marginBottom:"10px"}}>Encuentra todas las parejas antes de terminar el tiempo.</h2>
+      <h2  className="text-primary"style={{fontWeight:500, marginBottom:"10px"}}>Encuentra todas las parejas antes que termine el tiempo.</h2>
       {/* TIMER */}
       <h3>TIME: {timeLeft}s</h3>
      

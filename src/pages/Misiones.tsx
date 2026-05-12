@@ -2,9 +2,11 @@ import { Hero } from "../components/Hero/Hero";
 import HeroImageMisiones from "../assets/Misiones.png";
 import MemoryPairsImage from "../assets/MemoryPairs.png";
 import QuestionsImage from "../assets/Questions.png";
+import PuzzlesImage from "../assets/puzzles.jpg";
 import { useNavigate, type Session } from "react-router";
 import { useEffect, useState } from "react";
 import supabase from "../lib/supabase";
+import { GameCard } from "../components/GameCard/GameCard";
 
 export const Misiones = () => {
   const [session, setSession] = useState<Session | null>(null);
@@ -36,7 +38,7 @@ export const Misiones = () => {
       authListener.subscription.unsubscribe();
     };
   }, []);
-  
+
   return (
     <>
       <Hero
@@ -77,7 +79,8 @@ export const Misiones = () => {
               <div className="">
                 <h3 className="bold">Questions</h3>
                 <p>
-                  Gana hasta 3 stickers respondiendo todas las preguntas de forma correcta.
+                  Gana hasta 3 stickers respondiendo todas las preguntas de
+                  forma correcta.
                 </p>
               </div>
             </div>
@@ -100,36 +103,13 @@ export const Misiones = () => {
               </div>
               <div className="row">
                 <div className="col-12 col-md-6">
-                  <div className="ev-square-cards">
-                    <img
-                      src={MemoryPairsImage}
-                      alt="memory pairs image"
-                      className="img-fluid"
-                    />
-                    {session && (<button
-                      onClick={() => handleGoToMiniGame("memory-pairs")}
-                      type="button"
-                      className="btn btn-primary position-absolute bottom-0 end-0 m-3"
-                    >
-                      Jugar
-                    </button>)}
-                  </div>
+                  <GameCard session={session} imageSrc={MemoryPairsImage} redirectFunction={handleGoToMiniGame} gameName="memory-pairs"/>
                 </div>
                 <div className="col-12 col-md-6">
-                  <div className="ev-square-cards">
-                    <img
-                      src={QuestionsImage}
-                      alt="Questions image"
-                      className="img-fluid"
-                    />
-                    {session && (<button
-                      onClick={() => handleGoToMiniGame("questions-game")}
-                      type="button"
-                      className="btn btn-primary position-absolute bottom-0 end-0 m-3"
-                    >
-                      Jugar
-                    </button>)}
-                  </div>
+                  <GameCard session={session} imageSrc={QuestionsImage} redirectFunction={handleGoToMiniGame} gameName="questions-game"/>
+                </div>
+                <div className="col-12 col-md-6">
+                  <GameCard session={session} imageSrc={PuzzlesImage}redirectFunction={handleGoToMiniGame}gameName="puzzles"/>
                 </div>
               </div>
             </div>

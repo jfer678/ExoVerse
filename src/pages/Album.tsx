@@ -141,18 +141,13 @@ export const Album = () => {
     stickerId: string,
     targetStickerId: string,
   ) => {
-    console.log("🚀 ~ handleAttachSticker ~ stickerId:", stickerId)
     if (!session) return;
 
     if (stickerId !== targetStickerId) {
       alert("¡Solo puedes pegar el sticker en su lugar correspondiente!");
       return;
     }
-
-    console.log("🚀 ~ handleAttachSticker ~ session:", session.user.id)
     const { data, error } = await supabase.from("user_stickers").update({is_sticker_paste: true}).eq("user_id", session.user.id.trim()).eq("stickers_id", stickerId.trim()).select("*")
-
-    console.log("🚀 ~ handleAttachSticker ~ data:", data)
 
     setAttachedStickers((prev) => [...prev, stickerId]);
 
