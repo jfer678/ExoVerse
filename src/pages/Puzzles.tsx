@@ -8,15 +8,14 @@ const Puzzles = () => {
   const [puzzleImageURL, setPuzzleImageURL] = useState<string | null>(null);
 
   const [gridSize] = useState(3);
-  const pieceSize = 150;
+
+  const navigate = useNavigate();
 
   const [pieces, setPieces] = useState<number[]>([]);
   const [emptyIndex, setEmptyIndex] = useState<number | null>(null);
   const [isSolved, setIsSolved] = useState(false);
 
-  const navigate = useNavigate();
-
-  // 📱 Detectar pantalla
+  // Screen size
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -25,10 +24,13 @@ const Puzzles = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const isMobile = screenWidth < 640;
-  const isTablet = screenWidth >= 640 && screenWidth < 1024;
+  const isMobile = screenWidth < 600;
+  const isTablet = screenWidth >= 600 && screenWidth < 1024;
 
-  // 🔐 Auth
+  
+  const pieceSize = isMobile ? 100 : isTablet ? 200 : 150;
+
+  // Autenticacion
   useEffect(() => {
     const getInitialSession = async () => {
       const {
@@ -49,14 +51,14 @@ const Puzzles = () => {
     return () => authListener.subscription.unsubscribe();
   }, [navigate]);
 
-  // 🖼️ Imagen
+  // Obtener imagen de BD
   useEffect(() => {
     const fetchPuzzleImage = async () => {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from("puzzles_images")
         .select("image_url");
 
-      if (error || !data || data.length === 0) return;
+      if (!data || data.length === 0) return;
 
       const randomIndex = Math.floor(Math.random() * data.length);
       setPuzzleImageURL(data[randomIndex].image_url);
@@ -65,7 +67,7 @@ const Puzzles = () => {
     fetchPuzzleImage();
   }, []);
 
-  // 🧩 Puzzle init
+  // Inicio del Puzzle
   useEffect(() => {
     if (!puzzleImageURL) return;
 
@@ -144,22 +146,15 @@ const Puzzles = () => {
         boxSizing: "border-box",
       }}
     >
-      {/* 🧠 REFERENCIA (SOLO FIX RESPONSIVE) */}
+      {/* Responsive */}
       <div
         style={{
           position: isMobile || isTablet ? "relative" : "absolute",
-
           left: isMobile || isTablet ? "0" : "300px",
           top: isMobile || isTablet ? "0" : "36%",
-
-          transform:
-            isMobile || isTablet ? "none" : "translateY(-50%)",
-
+          transform: isMobile || isTablet ? "none" : "translateY(-50%)",
           textAlign: "center",
-
-          // 🔥 CLAVE: separa del puzzle en mobile/tablet
-          marginBottom: isMobile || isTablet ? "25px" : "0px",
-
+          marginBottom: isMobile || isTablet ? "18px" : "0px",
           zIndex: 2,
         }}
       >
@@ -169,14 +164,14 @@ const Puzzles = () => {
             alt="Referencia"
             style={{
               width: isMobile
-                ? "120px"
+                ? "150px"
                 : isTablet
-                ? "180px"
+                ? "200px"
                 : "250px",
               height: isMobile
-                ? "80px"
+                ? "150px"
                 : isTablet
-                ? "120px"
+                ? "150px"
                 : "150px",
               objectFit: "cover",
               borderRadius: "12px",
@@ -186,7 +181,7 @@ const Puzzles = () => {
         )}
       </div>
 
-      {/* 🧠 TÍTULO (NO SE TOCA) */}
+      {/* TITLE */}
       <h1
         style={{
           marginBottom: "30px",
@@ -203,7 +198,7 @@ const Puzzles = () => {
         </h2>
       )}
 
-      {/* 🧩 PUZZLE */}
+      {/* PUZZLE */}
       {!puzzleImageURL ? (
         <p>Cargando ...</p>
       ) : (
@@ -212,11 +207,11 @@ const Puzzles = () => {
             display: "grid",
             gridTemplateColumns: `repeat(${gridSize}, ${pieceSize}px)`,
             gridTemplateRows: `repeat(${gridSize}, ${pieceSize}px)`,
-
-            transform: isMobile ? "scale(1)" : "scaleX(1.5)",
-
+            transform: isMobile || isTablet ? "scale(0.9)" : "scaleX(1.5)",
             gap: "10px",
             padding: "15px",
+            paddingTop: "22px",
+            paddingBottom: "22px",
             background: "rgba(255,255,255,0.05)",
             borderRadius: "15px",
             boxShadow: "0 2px 40px rgb(255, 255, 255)",
@@ -238,10 +233,7 @@ const Puzzles = () => {
                   width: `${pieceSize}px`,
                   height: `${pieceSize}px`,
                   borderRadius: "8px",
-                  cursor:
-                    isPieceEmpty || isSolved
-                      ? "default"
-                      : "pointer",
+                  cursor: isPieceEmpty || isSolved ? "default" : "pointer",
                   backgroundColor: isPieceEmpty
                     ? "#ffffff"
                     : "transparent",
@@ -263,7 +255,7 @@ const Puzzles = () => {
         </div>
       )}
 
-      {/* 🏁 BOTÓN */}
+      {/* BOTÓN */}
       {isSolved && (
         <button
           onClick={() => window.location.reload()}
