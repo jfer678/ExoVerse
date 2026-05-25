@@ -1,19 +1,25 @@
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 
 export const Footer = () => {
+  const location = useLocation();
   return (
-    <footer className="bg-body-tertiary text-center mt-5">
-      
-
+    <footer
+      className={`bg-body-tertiary text-center ${
+        location.pathname === "/misiones/puzzles" ? "" : "mt-5"
+      }`}
+    >
       <div
-        className="text-center p-3"
-        style={{backgroundColor:" rgba(0, 0, 0, 0.05)"}}
+        className="container-fluid text-center p-3 d-flex flex-column flex-md-row justify-content-center align-items-center gap-2"
+        style={{ backgroundColor: "rgba(108, 107, 107, 0.58)" }}
       >
-        © 2026 Copyright:
-        <Link className="text-body" to="/">
+        <span className="text-muted small">
+          © 2026 Copyright:
+        </span>
+        <Link className="text-body fw-bold" to="/">
           ExoticVerse
         </Link>
       </div>
     </footer>
   );
 };
+

@@ -16,13 +16,13 @@ export const LoginForm = () => {
   return (
     <form
       onSubmit={formType === "login" ? handleLogin : handleSignUp}
-      className="bg-dark p-4 rounded text-white container position-fixed"
+      className="bg-dark py-4 rounded text-white  position-fixed"
       style={{
-        top: formType === "register" ? "28%" : "20%",
+        top: formType === "register" ? "38%" : "28%",
         left: "85%",
         zIndex: 1000,
         transform: "translate(-50%, -50%)",
-        maxWidth: "500px",
+        maxWidth: "400px",
         width: "100%",
       }}
     >

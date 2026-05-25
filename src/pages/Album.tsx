@@ -164,7 +164,7 @@ export const Album = () => {
     <>
       <div className="container">
         {newStickers.length > 0 && (
-          <div style={{ marginBottom: "20px"  }}>
+          <div>
             <h3 style= {{fontWeight:"bold", textAlign:"center",fontSize:"25px" }}>HAZ CLICK Y ARRASTRA LOS STICKERS AL ALBUM </h3> 
             <h4 style={{textAlign:"center"}}> Stickers obtenidos: </h4>
             <div

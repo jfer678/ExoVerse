@@ -1,8 +1,10 @@
+import type { JSX } from "react";
 import { NavLink } from "react-router";
 
 interface NavBarItemProps {
   to: string;
   label: string;
+  icon: JSX.Element;
   isDisabled?: boolean;
   shouldNotBeVisible?: boolean;
 }
@@ -10,6 +12,7 @@ interface NavBarItemProps {
 export const NavBarItem = ({
   to,
   label,
+  icon,
   isDisabled = false,
   shouldNotBeVisible = false,
 }: NavBarItemProps) => {
@@ -21,13 +24,16 @@ export const NavBarItem = ({
             <NavLink
               to={to}
               className={({ isActive }) =>
-                isActive ? "nav-link active text-center" : "nav-link text-primary text-center"
+                isActive ? "nav-link active text-center text-light bg-success" : "nav-link text-primary text-center"
               }
               style={{
                 fontSize: "28px",
+                borderRadius: "25px",
+                maxWidth: "200px",
+                margin: "0 auto",
               }}
             >
-              {label}
+              {icon}{" "}{label}
             </NavLink>
           ) : (
             <span className="nav-link disabled" style={{ fontSize: "28px" }}>

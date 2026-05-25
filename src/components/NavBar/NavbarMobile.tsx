@@ -7,6 +7,7 @@ import { type Session } from "@supabase/supabase-js";
 import logo from "../../assets/logo.png";
 import { NavBarItem } from "./NavBarItem";
 import { LoginForm } from "../Forms/LoginForm";
+import { LoginButton } from "./LoginButton";
 
 export const NavbarMobile = () => {
   const [isOpenLogin, setIsOpenLogin] = useState(false);
@@ -84,19 +85,9 @@ export const NavbarMobile = () => {
             ></button>
           </div>
           <div className="offcanvas-body">
-            <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
+            <ul className="navbar-nav justify-content-center flex-grow-1 pe-3">
                 {!session ? (
-                <>
-                  <li className="nav-item ms-auto">
-                    <button
-                      type="button"
-                      onClick={() => setIsOpenLogin((p) => !p)}
-                      className="btn btn-primary"
-                    >
-                      <i className="fa-solid fa-user"></i>{" "}
-                    </button>
-                  </li>
-                </>
+                  <LoginButton setter={setIsOpenLogin} isMobile={true} />
               ) : (
                 <div className="me-auto">
                   <li className="nav-item ">
@@ -104,7 +95,7 @@ export const NavbarMobile = () => {
                       Bienvenid@, {session.user.user_metadata.name}
                     </span>
                   </li>
-                  <li className="nav-item">
+                  <li className="nav-item mb-3">
                     <button
                       type="button"
                       onClick={() => handleLogout()}
@@ -115,11 +106,12 @@ export const NavbarMobile = () => {
                   </li>
                 </div>
               )}
-              {NAV_ELEMENTS.map(({ label, to }) => (
+              {NAV_ELEMENTS.map(({ label, to, icon }) => (
                 <NavBarItem
                   key={to}
                   label={label}
                   to={to}
+                  icon={icon}
                   isDisabled={isDisabled}
                   shouldNotBeVisible={to === "/album" && !session}
                 />

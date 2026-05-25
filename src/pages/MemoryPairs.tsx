@@ -318,10 +318,6 @@ const MemoryPairs = () => {
           >
             Reiniciar
           </button>
-          <button
-            className="btn btn-success" onClick={() => navigator("/album")}>
-              Ir al album
-            </button>
         </div>
       )}
 

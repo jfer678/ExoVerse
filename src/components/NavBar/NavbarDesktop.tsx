@@ -7,6 +7,7 @@ import logo from "../../assets/logo.png";
 import { useAuth } from "../../hooks/useAuth";
 import { useLocation } from "react-router";
 import type { Session } from "@supabase/supabase-js";
+import { LoginButton } from "./LoginButton";
 
 export const NavbarDesktop = () => {
   const [isOpenLogin, setIsOpenLogin] = useState(false);
@@ -55,29 +56,19 @@ export const NavbarDesktop = () => {
   return (
     <>
       <ul className="nav nav-tabs bg-light">
-        <div className="d-flex container">
+        <div className="d-flex container align-items-center">
           <li>
             <img src={logo} alt="logo" className="img-fluid" style={{maxWidth: "200px"}}/>
           </li>
-          {NAV_ELEMENTS.map(({ label, to }) => (
-            <NavBarItem key={to} label={label} to={to} isDisabled={isDisabled} shouldNotBeVisible={to === "/album" && !session} />
+          {NAV_ELEMENTS.map(({ label, to, icon }) => (
+            <NavBarItem key={to} label={label} to={to} icon={icon} isDisabled={isDisabled} shouldNotBeVisible={to === "/album" && !session} />
           ))}
           {!session ? (
-            <>
-              <li className="nav-item ms-auto">
-                <button
-                  type="button"
-                  onClick={() => setIsOpenLogin((p) => !p)}
-                  className="btn btn-lg btn-primary mt-4"
-                >
-                  <i className="fa-solid fa-user"></i>{" "}
-                </button>
-              </li>
-            </>
+            <LoginButton setter={setIsOpenLogin}/>
           ) : (
-            <div className="ms-auto d-flex">
+            <div className="ms-auto d-flex align-items-center">
             <li className="nav-item ">
-              <span className="nav-link text-dark">
+              <span className="text-dark me-3">
                 Bienvenid@, {session.user.user_metadata.name}
               </span>
             </li>

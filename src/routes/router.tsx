@@ -8,6 +8,7 @@ import { NotFound } from "../pages/NotFound";
 import MemoryPairs from "../pages/MemoryPairs";
 import QuestionsGame from "../pages/QuestionsGame";
 import Puzzles from "../pages/Puzzles";
+import MatchGame from "../pages/MatchGame"; 
 
 export const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ export const router = createBrowserRouter([
         element: <QuestionsGame />,
       },
       {
+        path: "/misiones/match-game",
+        element: <MatchGame />,
+      },
+      {
         path: "/misiones/puzzles",
         element: <Puzzles />,
       },
@@ -45,6 +50,7 @@ export const router = createBrowserRouter([
         path: "*",
         element: <NotFound />,
       }
+      
       
     ],
   },

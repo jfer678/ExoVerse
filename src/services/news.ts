@@ -2,7 +2,7 @@ import { httpClient } from "../lib/httpClient";
 
 export const getNews = async () => {
   const news = await httpClient.get("https://newsapi.org/v2/everything", {
-      q: "wildlife",
+      q: "animales+salvajes",
       apiKey: import.meta.env.VITE_NEWS_API_KEY,
       page: 1,
       pageSize: 5,

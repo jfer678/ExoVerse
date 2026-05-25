@@ -242,12 +242,7 @@ const QuestionsGame = () => {
         >
           Reiniciar
         </button>
-        <button
-          className="btn btn-success mt-3 ms-3"
-          onClick={() => navigator("/album")}
-        >
-          Ir al album
-        </button>
+       
       </div>
     );
   }
