@@ -1,9 +1,10 @@
+
+type ReactConnectLinesModule = typeof import("react-connect-lines");
 import { useEffect, useState } from "react";
 import supabase from "../lib/supabase";
 import { useNavigate } from "react-router";
 import type { Session } from "@supabase/supabase-js";
-import { ConnectProvider, Connect } from "react-connect-lines";
-import { DndContext } from "@dnd-kit/core";
+
 import { shuffleStickers } from "../helpers/helpers";
 
 // Las respuestas correctas
@@ -40,12 +41,19 @@ const MatchGame = () => {
     leftItems: [] as any[],
     rightItems: [] as any[],
   });
+  const [linesModule, setLinesModule] = useState<ReactConnectLinesModule | null>(null);
 
   const [connections, setConnections] = useState<
     { from: string; to: string }[]
   >([]);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    import("react-connect-lines").then((module) => {
+      setLinesModule(module);
+    });
+  }, []);
 
   // La sesion
   useEffect(() => {
@@ -176,6 +184,12 @@ const MatchGame = () => {
     fetchData();
   }, []);
 
+  if (!linesModule) {
+    return null;
+  }
+
+  const { ConnectProvider, Connect } = linesModule;
+
   return (
     <>
       <div
@@ -231,7 +245,6 @@ const MatchGame = () => {
         correcta arrastrando.
       </h3>
       <div className="wrapper">
-        <DndContext>
           <ConnectProvider>
             {/* Left items */}
             <div className="game-container left">
@@ -344,7 +357,6 @@ const MatchGame = () => {
               
             </div>
           </ConnectProvider>
-        </DndContext>
       </div>
     </>
   );
